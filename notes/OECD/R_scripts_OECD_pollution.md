@@ -31,8 +31,9 @@ colnames(df) <- var.names
 ```
 df_only_co2 <- filter(df, subject == "CO2")
 df_only_co2_aus <- filter(df_only_co2, location == "AUS")
-df_only_co2_aus_tonne_cap <- filter(df_only_co2_aus, measure == "TONNE_CAP")
 
+# selecting only one measure otherwise the grap will look very strange
+df_only_co2_aus_tonne_cap <- filter(df_only_co2_aus, measure == "TONNE_CAP") 
 ```
 
 ### Basic barplot
