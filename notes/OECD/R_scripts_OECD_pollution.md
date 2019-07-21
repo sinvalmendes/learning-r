@@ -43,3 +43,12 @@ p1 <-ggplot(data=df_only_co2_aus_tonne_cap, aes(x=time, y=value)) +
 
 ```
 
+### Analysis of Australia CO2 emission over the years
+```
+p1 <-ggplot(data=df_only_co2_aus_tonne_cap, aes(x=time, y=value)) +
+    geom_line() + #line plot
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) + #puts x labels in 90 vertical
+    xlab("Years") + ylab("CO2 emission in Tonnes/capita") + #labels for x and y axis
+    scale_x_discrete(limits=c(df_only_co2_aus_tonne_cap$time)) #very important because will make all values in x discrete and based on the existing values of 'time' column, will not hide anything
+p1
+```
