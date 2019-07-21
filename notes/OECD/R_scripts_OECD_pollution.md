@@ -67,8 +67,18 @@ df_only_co2_tonnes_cap[is.na(df_only_co2_tonnes_cap)] <- 0 #treating the NA in v
 sum_by_location <- aggregate(df_only_co2_tonnes_cap$value, by=list(category=df_only_co2_tonnes_cap$location), FUN=sum) #sum by location
 head(arrange(sum_by_location,desc(x)), n = 50)
 
-
 top_10 <- head(arrange(sum_by_location,desc(x)), n = 10)
 top_10
+
+
+df_only_co2_tonnes_cap_top_10 <-filter(df_only_co2_tonnes_cap, location %in% top_10$category)
+
+p1 <-ggplot(data=df_only_co2_tonnes_cap_top_10, aes(x=time, y=value)) +
+    geom_line(aes(linetype=location)) +
+    geom_point(size=1) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+    xlab("Years") + ylab("CO2 emission in Tonnes/capita") +
+    scale_x_discrete(limits=c(df_only_co2_tonnes_cap_top_10$time))
+p1
 
 ```
