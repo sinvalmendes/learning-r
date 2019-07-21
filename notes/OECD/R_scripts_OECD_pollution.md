@@ -9,10 +9,14 @@ library(ggplot2)
 install.packages("tidyverse")
 library(tidyverse)
 
+install.packages("plyr")
+library(plyr)
+
 install.packages("dplyr")
 library(dplyr)    
 
 library(readr)
+
 ```
 
 ### Import dataframe from CSV file
@@ -52,4 +56,19 @@ p1 <-ggplot(data=df_only_co2_aus_tonne_cap, aes(x=time, y=value)) +
     xlab("Years") + ylab("CO2 emission in Tonnes/capita") + #labels for x and y axis
     scale_x_discrete(limits=c(df_only_co2_aus_tonne_cap$time)) #very important because will make all values in x discrete and based on the existing values of 'time' column, will not hide anything
 p1
+```
+
+### Analysis of TOP 50 CO2 emission per capita over the years
+```
+df_only_co2 <- filter(df, subject == "CO2")
+df_only_co2_tonnes_cap <- filter(df_only_co2, measure == "TONNE_CAP") 
+
+df_only_co2_tonnes_cap[is.na(df_only_co2_tonnes_cap)] <- 0 #treating the NA in values column
+sum_by_location <- aggregate(df_only_co2_tonnes_cap$value, by=list(category=df_only_co2_tonnes_cap$location), FUN=sum) #sum by location
+head(arrange(sum_by_location,desc(x)), n = 50)
+
+
+top_10 <- head(arrange(sum_by_location,desc(x)), n = 10)
+top_10
+
 ```
