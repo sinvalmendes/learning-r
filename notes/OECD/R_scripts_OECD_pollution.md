@@ -73,9 +73,9 @@ top_10
 
 df_only_co2_tonnes_cap_top_10 <-filter(df_only_co2_tonnes_cap, location %in% top_10$category)
 
-p1 <-ggplot(data=df_only_co2_tonnes_cap_top_10, aes(x=time, y=value)) +
-    geom_line(aes(linetype=location)) +
-    geom_point(size=1) +
+p1 <-ggplot(data=df_only_co2_tonnes_cap_top_10, aes(x=time, y=value, color=location)) +
+    geom_line() +
+    geom_point() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
     xlab("Years") + ylab("CO2 emission in Tonnes/capita") +
     scale_x_discrete(limits=c(df_only_co2_tonnes_cap_top_10$time))
