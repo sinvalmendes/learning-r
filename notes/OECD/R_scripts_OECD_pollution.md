@@ -16,7 +16,6 @@ install.packages("dplyr")
 library(dplyr)    
 
 library(readr)
-
 ```
 
 ### Import dataframe from CSV file
@@ -104,4 +103,22 @@ df_only_co2_million_tonnes[is.na(df_only_co2_million_tonnes)] <- 0 #treating the
 df_only_co2_million_tonnes_us <- filter(df_only_co2_million_tonnes, location == "USA") 
 p1 <-ggplot(data=df_only_co2_million_tonnes_us, aes(x=time, y=value)) +
     geom_line()
+```
+
+### Analysis of TOP 10 by absolute CO2 emissions over the years
+```
+df_only_co2 <- filter(df, subject == "CO2")
+df_only_co2_million_tonnes <- filter(df_only_co2, measure == "MLN_TONNE") 
+df_only_co2_million_tonnes[is.na(df_only_co2_million_tonnes)] <- 0 #treating the NA in values column
+
+sum_by_location <- aggregate(df_only_co2_million_tonnes$value, by=list(location=df_only_co2_million_tonnes$location), FUN=sum)
+#need to transform the value in thousands of million of tonnes to just million of tonnes
+
+top_10 <- head(arrange(sum_by_location,desc(x)), n = 10)
+names(top_10)[names(top_10) == "x"] <- "value"
+
+p1 <-ggplot(data=top_10, aes(x=reorder(location, value), y=value)) +
+    geom_bar(stat="identity")
+
+p1
 ```
