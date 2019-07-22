@@ -94,3 +94,14 @@ p1 <-ggplot(data=df_only_co2_tonnes_cap_top_5, aes(x=time, y=value, color=locati
     scale_x_discrete(limits=c(df_only_co2_tonnes_cap_top_5$time))
 p1
 ```
+
+### Analysis CO2 US emissions over the years
+```
+df_only_co2 <- filter(df, subject == "CO2")
+df_only_co2_million_tonnes <- filter(df_only_co2, measure == "MLN_TONNE") 
+df_only_co2_million_tonnes[is.na(df_only_co2_million_tonnes)] <- 0 #treating the NA in values column
+
+df_only_co2_million_tonnes_us <- filter(df_only_co2_million_tonnes, location == "USA") 
+p1 <-ggplot(data=df_only_co2_million_tonnes_us, aes(x=time, y=value)) +
+    geom_line()
+```
