@@ -58,20 +58,19 @@ p1 <-ggplot(data=df_only_co2_aus_tonne_cap, aes(x=time, y=value)) +
 p1
 ```
 
-### Analysis of TOP 50 CO2 emission per capita over the years
+### Analysis of TOP CO2 emission per capita over the years
 ```
 df_only_co2 <- filter(df, subject == "CO2")
 df_only_co2_tonnes_cap <- filter(df_only_co2, measure == "TONNE_CAP") 
 
 df_only_co2_tonnes_cap[is.na(df_only_co2_tonnes_cap)] <- 0 #treating the NA in values column
 sum_by_location <- aggregate(df_only_co2_tonnes_cap$value, by=list(category=df_only_co2_tonnes_cap$location), FUN=sum) #sum by location
-head(arrange(sum_by_location,desc(x)), n = 50)
+head(arrange(sum_by_location, desc(x)), n = 50) #sorting 50 of them in descending order
 
-top_10 <- head(arrange(sum_by_location,desc(x)), n = 10)
+top_10 <- head(arrange(sum_by_location,desc(x)), n = 10) #getting the top 10 locations (descending order)
 top_10
 
-
-df_only_co2_tonnes_cap_top_10 <-filter(df_only_co2_tonnes_cap, location %in% top_10$category)
+df_only_co2_tonnes_cap_top_10 <-filter(df_only_co2_tonnes_cap, location %in% top_10$category) #filtering the original dataset by the top 10 locations
 
 p1 <-ggplot(data=df_only_co2_tonnes_cap_top_10, aes(x=time, y=value, color=location)) +
     geom_line() +
@@ -81,4 +80,17 @@ p1 <-ggplot(data=df_only_co2_tonnes_cap_top_10, aes(x=time, y=value, color=locat
     scale_x_discrete(limits=c(df_only_co2_tonnes_cap_top_10$time))
 p1
 
+
+top_5 <- head(arrange(sum_by_location,desc(x)), n = 5) #getting the top 5
+top_5
+
+df_only_co2_tonnes_cap_top_5 <-filter(df_only_co2_tonnes_cap, location %in% top_5$category)
+
+p1 <-ggplot(data=df_only_co2_tonnes_cap_top_5, aes(x=time, y=value, color=location)) +
+    geom_line() +
+    geom_point() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+    xlab("Years") + ylab("CO2 emission in Tonnes/capita") +
+    scale_x_discrete(limits=c(df_only_co2_tonnes_cap_top_5$time))
+p1
 ```
