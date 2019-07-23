@@ -112,7 +112,8 @@ df_only_co2_million_tonnes <- filter(df_only_co2, measure == "MLN_TONNE")
 df_only_co2_million_tonnes[is.na(df_only_co2_million_tonnes)] <- 0 #treating the NA in values column
 
 sum_by_location <- aggregate(df_only_co2_million_tonnes$value, by=list(location=df_only_co2_million_tonnes$location), FUN=sum)
-#need to transform the value in thousands of million of tonnes to just million of tonnes
+
+#top_10$value <- top_10$value * 1
 
 top_10 <- head(arrange(sum_by_location,desc(x)), n = 10)
 names(top_10)[names(top_10) == "x"] <- "value"
@@ -123,16 +124,16 @@ top_10 <- top_10[order(top_10$value), ]
 top_10$location <- factor(top_10$location, levels = top_10$location[order(top_10$value)])
 
 
-p1 <-ggplot(data=top_10, aes(x=location, y=value, order = -as.numeric(value), fill=location)) + 
+p1 <-ggplot(data=top_10, aes(x=location, y=value, fill=location)) + 
     geom_bar(stat="identity") +
     scale_fill_brewer(palette="RdYlGn", direction = -1) +
     labs(title = "CO2 emissions total by country/group",
        subtitle = "1960-2016",
        caption = "",
-       tag = "Figure 1",
+       tag = "",
        x = "Countries and Groups",
        y = "CO2 emission (million of tonnes)",
-       colour = "asd")
+       fill = "Locations")
 
 p1
 ```
