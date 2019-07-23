@@ -117,8 +117,23 @@ sum_by_location <- aggregate(df_only_co2_million_tonnes$value, by=list(location=
 top_10 <- head(arrange(sum_by_location,desc(x)), n = 10)
 names(top_10)[names(top_10) == "x"] <- "value"
 
-p1 <-ggplot(data=top_10, aes(x=reorder(location, value), y=value)) +
-    geom_bar(stat="identity")
+
+#sorting the dataset in ascending order of value
+top_10 <- top_10[order(top_10$value), ]
+top_10$location <- factor(top_10$location, levels = top_10$location[order(top_10$value)])
+
+
+p1 <-ggplot(data=top_10, aes(x=location, y=value, order = -as.numeric(value), fill=location)) + 
+    geom_bar(stat="identity") +
+    scale_fill_brewer(palette="RdYlGn", direction = -1) +
+    labs(title = "CO2 emissions total by country/group",
+       subtitle = "1960-2016",
+       caption = "",
+       tag = "Figure 1",
+       x = "Countries and Groups",
+       y = "CO2 emission (million of tonnes)",
+       colour = "asd")
 
 p1
 ```
+Would be nice to have the bar plot above but with a splitted bar by location, or a PIE chart.
