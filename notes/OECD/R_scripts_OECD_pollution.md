@@ -105,7 +105,7 @@ p1 <-ggplot(data=df_only_co2_million_tonnes_us, aes(x=time, y=value)) +
     geom_line()
 ```
 
-### Analysis of TOP 10 by absolute CO2 emissions over the years
+### Analysis of TOP 10 by total CO2 emissions over the years
 ```
 df_only_co2 <- filter(df, subject == "CO2")
 df_only_co2_million_tonnes <- filter(df_only_co2, measure == "MLN_TONNE") 
@@ -136,5 +136,42 @@ p1 <-ggplot(data=top_10, aes(x=location, y=value, fill=location)) +
        fill = "Locations")
 
 p1
+```
+
+### Analysis of TOP 10 by CO2 emissions over the years
+```
+df_only_co2 <- filter(df, subject == "CO2")
+df_only_co2_million_tonnes <- filter(df_only_co2, measure == "MLN_TONNE") 
+df_only_co2_million_tonnes[is.na(df_only_co2_million_tonnes)] <- 0 #treating the NA in values column
+
+sum_by_location <- aggregate(df_only_co2_million_tonnes$value, by=list(location=df_only_co2_million_tonnes$location), FUN=sum)
+
+#top_10$value <- top_10$value * 1
+
+top_10 <- head(arrange(sum_by_location,desc(x)), n = 10)
+names(top_10)[names(top_10) == "x"] <- "value"
+
+#sorting the dataset in ascending order of value
+top_10 <- top_10[order(top_10$value), ]
+top_10$location <- factor(top_10$location, levels = top_10$location[order(top_10$value)])
+
+df_only_co2_million_tonnes_top_10 <- filter(df_only_co2_million_tonnes, location %in% top_10$location)
+df_only_co2_million_tonnes_top_10
+
+p1 <-ggplot(data=df_only_co2_million_tonnes_top_10, aes(x=time, y=value, color=location)) +
+    geom_line() +
+    geom_point() +
+    labs(title = "CO2 emissions by country/group timeline",
+       subtitle = "1960-2016",
+       caption = "",
+       tag = "",
+       x = "Countries and Groups",
+       y = "CO2 emission (million of tonnes)",
+       color = "Locations") +
+    scale_x_discrete(limits=c(df_only_co2_million_tonnes_top_10$time)) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+p1
+
 ```
 Would be nice to have the bar plot above but with a splitted bar by location, or a PIE chart.
