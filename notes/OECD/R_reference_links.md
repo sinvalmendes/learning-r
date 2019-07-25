@@ -5,8 +5,8 @@ https://plot.ly/ggplot2/
 
 ### Tidyverse: good for seeing examples about plot and style
 https://ggplot2.tidyverse.org/reference/ggtheme.html
+https://ggplot2.tidyverse.org/reference/scale_brewer.html
 https://www.datanovia.com/en/blog/ggplot-colors-best-tricks-you-will-love/
-
 
 ### R cookbook
 http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
